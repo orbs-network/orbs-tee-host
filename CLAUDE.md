@@ -10,6 +10,8 @@ This is the **ORBS TEE Host** - the untrusted bridge component that connects DAp
 
 **Key Insight**: The host is **untrusted** and runs outside the TEE. It cannot access private keys or forge signatures. Its job is to forward requests, submit attestations, and expose APIs - not to verify enclave responses (that's the guardian network's job).
 
+**Integration Testing**: See `/home/ubuntu/INTEGRATION_TESTING.md` for complete guide on testing enclave + host communication.
+
 ## Build and Test Commands
 
 ### Development Commands

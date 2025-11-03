@@ -17,6 +17,7 @@ const configSchema = Joi.object({
     timeoutMs: Joi.number().default(30000),
     retryAttempts: Joi.number().default(5),
     retryDelayMs: Joi.number().default(100),
+    socketPath: Joi.string().optional(),
   }).required(),
   l3: Joi.object({
     endpoint: Joi.string().uri().required(),
