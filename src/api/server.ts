@@ -23,10 +23,7 @@ export interface ServerDependencies {
   tappId: string;
 }
 
-export function createServer(
-  config: ApiConfig,
-  deps: ServerDependencies
-): Application {
+export function createServer(config: ApiConfig, deps: ServerDependencies): Application {
   const app = express();
 
   // Middleware
@@ -35,25 +32,13 @@ export function createServer(
   app.use(loggingMiddleware());
 
   // Routes
-  app.post(
-    '/api/v1/request',
-    createRequestHandler(deps.vsockClient)
-  );
+  app.post('/api/v1/request', createRequestHandler(deps.vsockClient));
 
-  app.post(
-    '/api/v1/attest',
-    createAttestHandler(deps.vsockClient, deps.l3Client, deps.tappId)
-  );
+  app.post('/api/v1/attest', createAttestHandler(deps.vsockClient, deps.l3Client, deps.tappId));
 
-  app.get(
-    '/api/v1/health',
-    createHealthHandler(deps.vsockClient, deps.l3Client)
-  );
+  app.get('/api/v1/health', createHealthHandler(deps.vsockClient, deps.l3Client));
 
-  app.get(
-    '/api/v1/status',
-    createStatusHandler(deps.vsockClient, deps.l3Client)
-  );
+  app.get('/api/v1/status', createStatusHandler(deps.vsockClient, deps.l3Client));
 
   // Error handling (must be last)
   app.use(errorMiddleware());

@@ -9,11 +9,7 @@ import { L3Client } from '../../l3/client';
 import { TeeRequest, AttestationBundle } from '../../types';
 import logger from '../../utils/logger';
 
-export function createAttestHandler(
-  vsockClient: SocketClient,
-  l3Client: L3Client,
-  tappId: string
-) {
+export function createAttestHandler(vsockClient: SocketClient, l3Client: L3Client, tappId: string) {
   return async (_req: Request, res: Response) => {
     try {
       logger.info('Requesting attestation from enclave');

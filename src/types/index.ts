@@ -37,7 +37,7 @@ export interface VsockConfig {
 }
 
 export interface L3Config {
-  endpoint: string;  // Single endpoint (can be env var or config)
+  endpoint: string; // Single endpoint (can be env var or config)
   timeoutMs: number;
   retryAttempts: number;
 }

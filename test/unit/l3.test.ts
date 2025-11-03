@@ -79,9 +79,7 @@ describe('L3Client', () => {
 
       const callPayload = mockedAxios.post.mock.calls[0]?.[1] as any;
       expect(callPayload).toBeDefined();
-      expect(callPayload.attestation_doc).toBe(
-        mockBundle.attestationDoc.toString('base64')
-      );
+      expect(callPayload.attestation_doc).toBe(mockBundle.attestationDoc.toString('base64'));
       expect(callPayload.certificate_chain).toEqual(
         mockBundle.certificateChain.map((cert) => cert.toString('base64'))
       );
@@ -131,9 +129,7 @@ describe('L3Client', () => {
     it('should throw L3Error on failure', async () => {
       mockedAxios.get.mockRejectedValue({ message: 'Not found' });
 
-      await expect(client.queryConsensusStatus('att-123')).rejects.toThrow(
-        L3Error
-      );
+      await expect(client.queryConsensusStatus('att-123')).rejects.toThrow(L3Error);
       await expect(client.queryConsensusStatus('att-123')).rejects.toThrow(
         /Failed to query consensus status/
       );

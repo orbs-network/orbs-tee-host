@@ -58,10 +58,7 @@ describe('loadConfig', () => {
     const config = loadConfig('/test/config.json');
 
     expect(config).toEqual(validConfig);
-    expect(mockedFs.readFileSync).toHaveBeenCalledWith(
-      '/test/config.json',
-      'utf-8'
-    );
+    expect(mockedFs.readFileSync).toHaveBeenCalledWith('/test/config.json', 'utf-8');
   });
 
   it('should use default config path if not specified', () => {
@@ -81,10 +78,7 @@ describe('loadConfig', () => {
 
     loadConfig();
 
-    expect(mockedFs.readFileSync).toHaveBeenCalledWith(
-      '/custom/path/config.json',
-      'utf-8'
-    );
+    expect(mockedFs.readFileSync).toHaveBeenCalledWith('/custom/path/config.json', 'utf-8');
   });
 
   it('should override vsock config with environment variables', () => {
@@ -135,9 +129,7 @@ describe('loadConfig', () => {
     });
 
     expect(() => loadConfig('/test/config.json')).toThrow(ConfigError);
-    expect(() => loadConfig('/test/config.json')).toThrow(
-      /Failed to load config file/
-    );
+    expect(() => loadConfig('/test/config.json')).toThrow(/Failed to load config file/);
   });
 
   it('should throw ConfigError if JSON is invalid', () => {
@@ -157,9 +149,7 @@ describe('loadConfig', () => {
     mockedFs.readFileSync.mockReturnValue(JSON.stringify(invalidConfig));
 
     expect(() => loadConfig('/test/config.json')).toThrow(ConfigError);
-    expect(() => loadConfig('/test/config.json')).toThrow(
-      /Config validation failed/
-    );
+    expect(() => loadConfig('/test/config.json')).toThrow(/Config validation failed/);
   });
 
   it('should apply default values for optional fields', () => {

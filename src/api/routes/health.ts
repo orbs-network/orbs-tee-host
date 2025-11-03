@@ -9,10 +9,7 @@ import { HealthStatus } from '../../types';
 
 const startTime = Date.now();
 
-export function createHealthHandler(
-  vsockClient: SocketClient,
-  l3Client: L3Client
-) {
+export function createHealthHandler(vsockClient: SocketClient, l3Client: L3Client) {
   return async (_req: Request, res: Response) => {
     try {
       // Check enclave connection

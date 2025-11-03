@@ -89,9 +89,7 @@ describe('End-to-End Tests', () => {
         status: 'pending',
       };
 
-      nock(l3Endpoint)
-        .post('/attestation/submit')
-        .reply(200, mockL3Response);
+      nock(l3Endpoint).post('/attestation/submit').reply(200, mockL3Response);
 
       // Step 1: Get attestation from enclave via host API
       const attestResponse = await request(app).post('/api/v1/attest').send({
@@ -115,9 +113,7 @@ describe('End-to-End Tests', () => {
 
     it('should handle L3 submission errors gracefully', async () => {
       // Mock L3 guardian error
-      nock(l3Endpoint)
-        .post('/attestation/submit')
-        .reply(500, { error: 'Guardian unavailable' });
+      nock(l3Endpoint).post('/attestation/submit').reply(500, { error: 'Guardian unavailable' });
 
       const attestResponse = await request(app).post('/api/v1/attest').send({
         tappId: 'test-tapp-error',
@@ -138,12 +134,14 @@ describe('End-to-End Tests', () => {
         data: '0x',
       };
 
-      const response = await request(app).post('/api/v1/request').send({
-        method: 'sign_transaction',
-        params: {
-          data: JSON.stringify(transactionData),
-        },
-      });
+      const response = await request(app)
+        .post('/api/v1/request')
+        .send({
+          method: 'sign_transaction',
+          params: {
+            data: JSON.stringify(transactionData),
+          },
+        });
 
       expect(response.status).toBe(200);
       expect(response.body).toMatchObject({
@@ -155,12 +153,14 @@ describe('End-to-End Tests', () => {
       });
 
       // Verify signature is deterministic for same input
-      const response2 = await request(app).post('/api/v1/request').send({
-        method: 'sign_transaction',
-        params: {
-          data: JSON.stringify(transactionData),
-        },
-      });
+      const response2 = await request(app)
+        .post('/api/v1/request')
+        .send({
+          method: 'sign_transaction',
+          params: {
+            data: JSON.stringify(transactionData),
+          },
+        });
 
       expect(response2.body.data.signature).toBe(response.body.data.signature);
       expect(mockEnclave.getRequestCount()).toBe(2);

@@ -2,13 +2,7 @@
  * Unit tests for error classes
  */
 
-import {
-  HostError,
-  VsocketError,
-  L3Error,
-  AuthError,
-  ConfigError,
-} from '../../src/utils/errors';
+import { HostError, VsocketError, L3Error, AuthError, ConfigError } from '../../src/utils/errors';
 
 describe('Error Classes', () => {
   describe('HostError', () => {

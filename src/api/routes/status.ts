@@ -10,10 +10,7 @@ import { StatusResponse } from '../../types';
 const startTime = Date.now();
 let requestsProcessed = 0;
 
-export function createStatusHandler(
-  vsockClient: SocketClient,
-  l3Client: L3Client
-) {
+export function createStatusHandler(vsockClient: SocketClient, l3Client: L3Client) {
   return async (_req: Request, res: Response) => {
     try {
       // Check enclave connection

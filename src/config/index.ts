@@ -35,19 +35,14 @@ const configSchema = Joi.object({
     rateLimitingEnabled: Joi.boolean().default(false),
   }).required(),
   logging: Joi.object({
-    level: Joi.string()
-      .valid('error', 'warn', 'info', 'debug')
-      .default('info'),
+    level: Joi.string().valid('error', 'warn', 'info', 'debug').default('info'),
     format: Joi.string().valid('json', 'pretty').default('json'),
   }).required(),
 });
 
 export function loadConfig(configPath?: string): Config {
   // Determine config file path
-  const filePath =
-    configPath ||
-    process.env.CONFIG_PATH ||
-    path.join(process.cwd(), 'config.json');
+  const filePath = configPath || process.env.CONFIG_PATH || path.join(process.cwd(), 'config.json');
 
   logger.info('Loading configuration', { filePath });
 
@@ -57,9 +52,7 @@ export function loadConfig(configPath?: string): Config {
     const configFile = fs.readFileSync(filePath, 'utf-8');
     baseConfig = JSON.parse(configFile);
   } catch (error) {
-    throw new ConfigError(
-      `Failed to load config file: ${(error as Error).message}`
-    );
+    throw new ConfigError(`Failed to load config file: ${(error as Error).message}`);
   }
 
   // Override with environment variables
@@ -67,12 +60,8 @@ export function loadConfig(configPath?: string): Config {
     ...baseConfig,
     vsock: {
       ...baseConfig.vsock,
-      cid: process.env.VSOCK_CID
-        ? parseInt(process.env.VSOCK_CID)
-        : baseConfig.vsock.cid,
-      port: process.env.VSOCK_PORT
-        ? parseInt(process.env.VSOCK_PORT)
-        : baseConfig.vsock.port,
+      cid: process.env.VSOCK_CID ? parseInt(process.env.VSOCK_CID) : baseConfig.vsock.cid,
+      port: process.env.VSOCK_PORT ? parseInt(process.env.VSOCK_PORT) : baseConfig.vsock.port,
     },
     l3: {
       ...baseConfig.l3,
@@ -81,9 +70,7 @@ export function loadConfig(configPath?: string): Config {
     api: {
       ...baseConfig.api,
       host: process.env.API_HOST || baseConfig.api.host,
-      port: process.env.API_PORT
-        ? parseInt(process.env.API_PORT)
-        : baseConfig.api.port,
+      port: process.env.API_PORT ? parseInt(process.env.API_PORT) : baseConfig.api.port,
     },
     logging: {
       ...baseConfig.logging,

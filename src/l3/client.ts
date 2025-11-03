@@ -4,12 +4,7 @@
  */
 
 import axios, { AxiosError } from 'axios';
-import {
-  L3Config,
-  AttestationBundle,
-  AttestationSubmission,
-  ConsensusStatus,
-} from '../types';
+import { L3Config, AttestationBundle, AttestationSubmission, ConsensusStatus } from '../types';
 import { L3Error } from '../utils/errors';
 import { retryWithBackoff } from '../utils/retry';
 import logger from '../utils/logger';
@@ -24,9 +19,7 @@ export class L3Client {
   /**
    * Submit attestation to L3 endpoint
    */
-  async submitAttestation(
-    bundle: AttestationBundle
-  ): Promise<AttestationSubmission> {
+  async submitAttestation(bundle: AttestationBundle): Promise<AttestationSubmission> {
     logger.info('Submitting attestation to L3', {
       endpoint: this.config.endpoint,
       tappId: bundle.tappId,
@@ -34,9 +27,7 @@ export class L3Client {
 
     const payload = {
       attestation_doc: bundle.attestationDoc.toString('base64'),
-      certificate_chain: bundle.certificateChain.map((cert) =>
-        cert.toString('base64')
-      ),
+      certificate_chain: bundle.certificateChain.map((cert) => cert.toString('base64')),
       enclave_public_key: bundle.enclavePublicKey,
       tapp_id: bundle.tappId,
     };
@@ -44,16 +35,12 @@ export class L3Client {
     return retryWithBackoff(
       async () => {
         try {
-          const response = await axios.post(
-            `${this.config.endpoint}/attestation/submit`,
-            payload,
-            {
-              timeout: this.config.timeoutMs,
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
-          );
+          const response = await axios.post(`${this.config.endpoint}/attestation/submit`, payload, {
+            timeout: this.config.timeoutMs,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
 
           const submission: AttestationSubmission = {
             attestationId: response.data.attestation_id,
@@ -73,9 +60,7 @@ export class L3Client {
             error: axiosError.message,
             status: axiosError.response?.status,
           });
-          throw new L3Error(
-            `Failed to submit attestation: ${axiosError.message}`
-          );
+          throw new L3Error(`Failed to submit attestation: ${axiosError.message}`);
         }
       },
       {
@@ -89,9 +74,7 @@ export class L3Client {
   /**
    * Query consensus status for an attestation
    */
-  async queryConsensusStatus(
-    attestationId: string
-  ): Promise<ConsensusStatus> {
+  async queryConsensusStatus(attestationId: string): Promise<ConsensusStatus> {
     logger.debug('Querying consensus status', {
       attestationId,
       endpoint: this.config.endpoint,
@@ -121,9 +104,7 @@ export class L3Client {
       return status;
     } catch (error) {
       const axiosError = error as AxiosError;
-      throw new L3Error(
-        `Failed to query consensus status: ${axiosError.message}`
-      );
+      throw new L3Error(`Failed to query consensus status: ${axiosError.message}`);
     }
   }
 

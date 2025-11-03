@@ -25,8 +25,7 @@ export class MockEnclave {
     this.config = {
       socketPath: config.socketPath || '/tmp/enclave.sock',
       publicKey:
-        config.publicKey ||
-        '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+        config.publicKey || '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
       autoSign: config.autoSign ?? true,
       attestationDoc: config.attestationDoc || 'mock-attestation-document',
     };
@@ -107,9 +106,7 @@ export class MockEnclave {
 
           // Process message
           try {
-            const request: TeeRequest = JSON.parse(
-              messageBuffer.toString('utf-8')
-            );
+            const request: TeeRequest = JSON.parse(messageBuffer.toString('utf-8'));
             console.log('Mock enclave received request:', request.method);
             this.requestCount++;
 
@@ -183,9 +180,7 @@ export class MockEnclave {
         return {
           ...baseResponse,
           data: {
-            attestationDoc: Buffer.from(this.config.attestationDoc).toString(
-              'base64'
-            ),
+            attestationDoc: Buffer.from(this.config.attestationDoc).toString('base64'),
             certificateChain: [
               Buffer.from('mock-cert-1').toString('base64'),
               Buffer.from('mock-cert-2').toString('base64'),
@@ -242,9 +237,6 @@ export class MockEnclave {
 
     // Send length + message
     socket.write(Buffer.concat([lengthBuffer, jsonBuffer]));
-    console.log(
-      'Mock enclave sent response:',
-      response.success ? 'success' : 'error'
-    );
+    console.log('Mock enclave sent response:', response.success ? 'success' : 'error');
   }
 }

@@ -149,12 +149,14 @@ describe('API Integration Tests', () => {
     });
 
     it('should sign transaction in enclave', async () => {
-      const response = await request(app).post('/api/v1/request').send({
-        method: 'sign_transaction',
-        params: {
-          data: 'test-transaction-data',
-        },
-      });
+      const response = await request(app)
+        .post('/api/v1/request')
+        .send({
+          method: 'sign_transaction',
+          params: {
+            data: 'test-transaction-data',
+          },
+        });
 
       expect(response.status).toBe(200);
       expect(response.body).toMatchObject({
@@ -168,13 +170,15 @@ describe('API Integration Tests', () => {
     });
 
     it('should execute generic command in enclave', async () => {
-      const response = await request(app).post('/api/v1/request').send({
-        method: 'execute',
-        params: {
-          command: 'test-command',
-          args: ['arg1', 'arg2'],
-        },
-      });
+      const response = await request(app)
+        .post('/api/v1/request')
+        .send({
+          method: 'execute',
+          params: {
+            command: 'test-command',
+            args: ['arg1', 'arg2'],
+          },
+        });
 
       expect(response.status).toBe(200);
       expect(response.body).toMatchObject({
