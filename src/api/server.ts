@@ -3,6 +3,9 @@
  */
 
 import express, { Application } from 'express';
+import https from 'https';
+import http from 'http';
+import fs from 'fs';
 import cors from 'cors';
 import { ApiConfig } from '../types';
 import { SocketClient } from '../vsock/client';
@@ -52,12 +55,31 @@ export function createServer(config: ApiConfig, deps: ServerDependencies): Appli
 }
 
 export function startServer(app: Application, config: ApiConfig): void {
-  const server = app.listen(config.port, config.host, () => {
-    logger.info('API server listening', {
-      host: config.host,
-      port: config.port,
+  let server: http.Server | https.Server;
+
+  if (config.tlsEnabled && config.tlsCert && config.tlsKey) {
+    // HTTPS server
+    const httpsOptions = {
+      cert: fs.readFileSync(config.tlsCert),
+      key: fs.readFileSync(config.tlsKey),
+    };
+
+    server = https.createServer(httpsOptions, app);
+    server.listen(config.port, config.host, () => {
+      logger.info('HTTPS server listening', {
+        host: config.host,
+        port: config.port,
+      });
     });
-  });
+  } else {
+    // HTTP server
+    server = app.listen(config.port, config.host, () => {
+      logger.info('HTTP server listening', {
+        host: config.host,
+        port: config.port,
+      });
+    });
+  }
 
   // Graceful shutdown
   process.on('SIGTERM', () => {

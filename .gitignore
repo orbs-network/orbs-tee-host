@@ -44,3 +44,6 @@ config.prod.json
 *.tmp
 *.temp
 .cache/
+
+# SSL certificates
+*.pem
