@@ -1,0 +1,34 @@
+{
+  "api": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "tlsEnabled": false,
+    "tlsCertPath": "/etc/ssl/certs/host-cert.pem",
+    "tlsKeyPath": "/etc/ssl/private/host-key.pem"
+  },
+  "vsock": {
+    "cid": 3,
+    "port": 5000,
+    "timeoutMs": 10000,
+    "retryAttempts": 5,
+    "retryDelayMs": 1000
+  },
+  "l3": {
+    "endpoint": "https://l3-guardian.orbs.network",
+    "timeoutMs": 15000,
+    "retryAttempts": 3
+  },
+  "auth": {
+    "enabled": true,
+    "apiKey": "CHANGE_ME_USE_ENV_VAR",
+    "allowedOrigins": ["https://your-frontend.com"],
+    "rateLimitingEnabled": true,
+    "maxRequestsPerMinute": 100
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "file": "/var/log/orbs-tee-host/host.log"
+  },
+  "tappId": "production-tapp-001"
+}

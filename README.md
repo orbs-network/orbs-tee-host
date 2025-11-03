@@ -4,6 +4,13 @@ The **ORBS TEE Host** is the bridge component that connects DApps with Trusted E
 
 **Built with TypeScript/Node.js** for seamless integration with the ORBS ecosystem.
 
+## 📚 Documentation
+
+- **[Quick Start Guide](QUICKSTART.md)** - 5-minute setup for AWS Nitro
+- **[Deployment Guide](DEPLOYMENT.md)** - Comprehensive production deployment
+- **[Architecture](ARCHITECTURE.md)** - System design and protocol details
+- **[TODO](TODO.md)** - Development roadmap
+
 ## Overview
 
 This host application is part of the ORBS V5 L3 TEE Architecture, which provides:

@@ -15,7 +15,11 @@
       "WebFetch(domain:github.com)",
       "Bash(npm ci:*)",
       "Bash(gh run list:*)",
-      "Bash(gh run watch:*)"
+      "Bash(gh run watch:*)",
+      "Bash(awk:*)",
+      "Bash(xargs kill:*)",
+      "Bash(pkill -9 -f \"npm test\")",
+      "Bash(pkill:*)"
     ],
     "deny": [],
     "ask": []
