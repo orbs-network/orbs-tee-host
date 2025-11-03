@@ -19,8 +19,7 @@ export function createHealthHandler(
       const enclaveConnected = vsockClient.isConnected();
 
       // Check L3 reachability
-      const { reachable } = await l3Client.checkGuardiansHealth();
-      const l3Reachable = reachable > 0;
+      const l3Reachable = await l3Client.checkHealth();
 
       // Calculate uptime
       const uptimeSeconds = Math.floor((Date.now() - startTime) / 1000);

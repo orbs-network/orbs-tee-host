@@ -19,7 +19,7 @@ const configSchema = Joi.object({
     retryDelayMs: Joi.number().default(100),
   }).required(),
   l3: Joi.object({
-    endpoints: Joi.array().items(Joi.string().uri()).min(1).required(),
+    endpoint: Joi.string().uri().required(),
     timeoutMs: Joi.number().default(30000),
     retryAttempts: Joi.number().default(3),
   }).required(),
@@ -73,6 +73,10 @@ export function loadConfig(configPath?: string): Config {
       port: process.env.VSOCK_PORT
         ? parseInt(process.env.VSOCK_PORT)
         : baseConfig.vsock.port,
+    },
+    l3: {
+      ...baseConfig.l3,
+      endpoint: process.env.L3_ENDPOINT || baseConfig.l3.endpoint,
     },
     api: {
       ...baseConfig.api,

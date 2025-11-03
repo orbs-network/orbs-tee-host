@@ -7,20 +7,14 @@
     "retryDelayMs": 100
   },
   "l3": {
-    "endpoints": [
-      "https://guardian1.orbs.network",
-      "https://guardian2.orbs.network",
-      "https://guardian3.orbs.network"
-    ],
+    "endpoint": "http://localhost:3001",
     "timeoutMs": 30000,
     "retryAttempts": 3
   },
   "api": {
     "host": "0.0.0.0",
     "port": 8080,
-    "tlsEnabled": false,
-    "tlsCert": "",
-    "tlsKey": ""
+    "tlsEnabled": false
   },
   "auth": {
     "enabled": false,

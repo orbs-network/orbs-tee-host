@@ -34,6 +34,7 @@ coverage/
 .nyc_output/
 
 # Configuration
+config.json
 config.local.json
 config.prod.json
 

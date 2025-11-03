@@ -19,19 +19,19 @@ export function createStatusHandler(
       // Check enclave connection
       const enclaveConnected = vsockClient.isConnected();
 
-      // Check L3 guardians
-      const { reachable } = await l3Client.checkGuardiansHealth();
+      // Check L3 endpoint
+      const l3Reachable = await l3Client.checkHealth();
 
       // Calculate uptime
       const uptimeSeconds = Math.floor((Date.now() - startTime) / 1000);
 
       const status: StatusResponse = {
         hostVersion: '0.1.0',
-        status: enclaveConnected && reachable > 0 ? 'healthy' : 'unhealthy',
+        status: enclaveConnected && l3Reachable ? 'healthy' : 'unhealthy',
         enclaveConnected,
         enclavePublicKey: undefined, // TODO: Get from enclave
-        l3Reachable: reachable > 0,
-        l3GuardiansReachable: reachable,
+        l3Reachable,
+        l3GuardiansReachable: l3Reachable ? 1 : 0,
         uptimeSeconds,
         requestsProcessed,
       };
