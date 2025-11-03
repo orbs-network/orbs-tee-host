@@ -12,6 +12,25 @@ import { L3Client } from '../../src/l3/client';
 import { AuthModule } from '../../src/auth';
 import { ApiConfig, VsockConfig, L3Config, AuthConfig } from '../../src/types';
 
+// Helper to wait for socket to be ready
+async function waitForSocket(
+  socketPath: string,
+  timeoutMs: number = 5000
+): Promise<void> {
+  const startTime = Date.now();
+  const fs = require('fs');
+
+  while (Date.now() - startTime < timeoutMs) {
+    if (fs.existsSync(socketPath)) {
+      // Wait a bit more for the server to be ready to accept connections
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  throw new Error(`Socket ${socketPath} did not appear within ${timeoutMs}ms`);
+}
+
 describe('API Integration Tests', () => {
   let mockEnclave: MockEnclave;
   let app: Application;
@@ -22,9 +41,18 @@ describe('API Integration Tests', () => {
   const socketPath = '/tmp/enclave-test.sock';
 
   beforeAll(async () => {
+    // Clean up any existing socket file
+    const fs = require('fs');
+    if (fs.existsSync(socketPath)) {
+      fs.unlinkSync(socketPath);
+    }
+
     // Start mock enclave
     mockEnclave = new MockEnclave({ socketPath });
     await mockEnclave.start();
+
+    // Wait for socket to be ready
+    await waitForSocket(socketPath);
 
     // Create clients
     const vsockConfig: VsockConfig = {
@@ -65,12 +93,12 @@ describe('API Integration Tests', () => {
       authModule,
       tappId: 'test-tapp-123',
     });
-  });
+  }, 30000); // 30 second timeout for setup
 
   afterAll(async () => {
     await vsockClient.disconnect();
     await mockEnclave.stop();
-  });
+  }, 10000);
 
   beforeEach(() => {
     mockEnclave.resetRequestCount();

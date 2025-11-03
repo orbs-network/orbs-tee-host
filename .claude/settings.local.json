@@ -13,7 +13,9 @@
       "Bash(npm run format:fix:*)",
       "Bash(npm run format:*)",
       "WebFetch(domain:github.com)",
-      "Bash(npm ci:*)"
+      "Bash(npm ci:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run watch:*)"
     ],
     "deny": [],
     "ask": []
