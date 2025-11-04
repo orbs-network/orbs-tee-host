@@ -19,7 +19,7 @@ async function main() {
     // Load configuration
     const config = loadConfig();
 
-    // Initialize vsocket client (Unix socket for Mac, vsocket for Linux)
+    // Initialize vsocket client (Use UnixSocketClient for testing with network)
     const vsockClient = new UnixSocketClient(config.vsock);
 
     logger.info('Connecting to enclave');

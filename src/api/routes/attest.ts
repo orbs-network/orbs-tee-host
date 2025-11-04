@@ -28,6 +28,14 @@ export function createAttestHandler(vsockClient: SocketClient, l3Client: L3Clien
         throw new Error('Failed to get attestation from enclave');
       }
 
+      // Check if attestation data exists
+      if (!response.data.attestation) {
+        return res.status(501).json({
+          error: 'Attestation not supported',
+          message: 'This enclave does not support attestation (requires AWS Nitro hardware)',
+        });
+      }
+
       // Extract attestation data
       const attestationDoc = Buffer.from(response.data.attestation, 'base64');
       const certificateChain = response.data.certificates.map((cert: string) =>
@@ -50,14 +58,17 @@ export function createAttestHandler(vsockClient: SocketClient, l3Client: L3Clien
       });
 
       // Return confirmation
-      res.json({
+      return res.json({
         status: 'submitted',
         attestationId: submission.attestationId,
         submissionTime: submission.submissionTime,
       });
     } catch (error) {
       logger.error('Attestation failed', { error: (error as Error).message });
-      throw error;
+      return res.status(500).json({
+        error: 'Internal server error',
+        message: (error as Error).message,
+      });
     }
   };
 }
